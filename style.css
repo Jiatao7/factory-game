@@ -1,0 +1,43 @@
+#screen
+{
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0vh;
+    left: 0vw;
+    background-color: grey;
+}
+
+#main
+{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 56vh;
+    background-color: green;
+    margin: auto auto;
+    flex-wrap: wrap;
+}
+
+#grid
+{
+    width: 56vh;
+    height: 80vh;
+    background-color: yellow;
+}
+
+#headbar
+{
+    width: 56vh;
+    height: 10vh;
+    background-color: red;
+}
+
+#footbar
+{
+    width: 56vh;
+    height: 10vh;
+    background-color: red;
+}
