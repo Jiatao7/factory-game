@@ -23,6 +23,8 @@
 
 #grid
 {
+    /*7x10 grid size*/
+    /*8x8 tile*/
     width: 56vh;
     height: 80vh;
     background-color: yellow;
@@ -40,4 +42,13 @@
     width: 56vh;
     height: 10vh;
     background-color: red;
+}
+
+#place
+{
+    width: 8vh;
+    height: 8vh;
+    background-color: red;
+    position: absolute;
+    transform: translate(-50%, -50%)
 }
