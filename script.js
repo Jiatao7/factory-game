@@ -8,6 +8,8 @@ let direction = 0;
 let rotation = 0;
 let gridPosX = 0;
 let gridPosY = 0;
+let tileSize = 8;
+
 
 function pxToVh(pxValue) {
   const viewportHeight = window.innerHeight;
@@ -39,18 +41,24 @@ window.addEventListener('mousemove', (event) => {
 function updatePosition() {
     const element = document.getElementById("place");
     if (element) {
-        element.style.top = String((Math.round((mouseVy + 10)/ 8) * 8) - 10) +  "vh";
-        element.style.left =  String(Math.round((mouseVx - (vwToVh(100) - 48)/2)/ 8) * 8 + (vwToVh(100) - 48)/2) +  "vh";
-        gridPosY = String((Math.round((mouseVy + 10)/ 8) * 8) - 10);
-        gridPosX =  String(Math.round((mouseVx - (vwToVh(100) - 48)/2)/ 8) * 8 + (vwToVh(100) - 48)/2);
-        gridPosY = (gridPosY - 6)/8;
+        //idk what 48 is
+        element.style.top = String((Math.round((mouseVy + 10)/ tileSize) * tileSize) - 10) +  "vh";
+        element.style.left =  String(Math.round((mouseVx - (vwToVh(100) - 48)/2)/ tileSize) * tileSize + (vwToVh(100) - 48)/2) +  "vh";
+        gridPosY = String((Math.round((mouseVy + 10)/ tileSize) * tileSize) - 10);
+        gridPosX =  String(Math.round((mouseVx - (vwToVh(100) - 48)/2)/tileSize) * tileSize + (vwToVh(100) - 48)/2);
+        gridPosY = (gridPosY - 6)/tileSize;
         
         console.log("Y: " + gridPosY);
-        console.log((Math.round(gridPosX - 32)/8));
+        console.log((Math.round(gridPosX - 32)/tileSize));
+
+        //Vertical Clamp
         if(gridPosY < 1)
         {
-          console.log("over")
-          element.style.top = String((gridPosY) * 8) +  "vh";
+          element.style.top = String(10 + tileSize/2) +  "vh";
+        }
+        if(gridPosY > 10)
+        {
+          element.style.top = String(82 + tileSize/2) +  "vh";
         }
       }
     // Keeps the loop running smoothly
