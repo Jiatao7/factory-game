@@ -9,24 +9,25 @@ let rotation = 0;
 let gridPosX = 0;
 let gridPosY = 0;
 let tileSize = 8;
-
+let gridWidth = 7;
+let gridHeight = 10;
 
 function pxToVh(pxValue) {
-  const viewportHeight = window.innerHeight;
-  return (pxValue / viewportHeight) * 100;
+	const viewportHeight = window.innerHeight;
+	return (pxValue / viewportHeight) * 100;
 }
 
 function vwToVh(vwValue) {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
+  	const width = window.innerWidth;
+  	const height = window.innerHeight;
   
-  return vwValue * (width / height);
+  	return vwValue * (width / height);
 }
 
 function vhToVw(vhValue) {
-  const height = window.innerHeight;
-  const width = window.innerWidth;
-  return (vhValue * h) / w;
+  	const height = window.innerHeight;
+  	const width = window.innerWidth;
+  	return (vhValue * height) / width;
 }
 
 window.addEventListener('mousemove', (event) => {
@@ -46,20 +47,31 @@ function updatePosition() {
         element.style.left =  String(Math.round((mouseVx - (vwToVh(100) - 48)/2)/ tileSize) * tileSize + (vwToVh(100) - 48)/2) +  "vh";
         gridPosY = String((Math.round((mouseVy + 10)/ tileSize) * tileSize) - 10);
         gridPosX =  String(Math.round((mouseVx - (vwToVh(100) - 48)/2)/tileSize) * tileSize + (vwToVh(100) - 48)/2);
+        gridPosX = (Math.round(gridPosX - 32)/tileSize)
         gridPosY = (gridPosY - 6)/tileSize;
         
         console.log("Y: " + gridPosY);
-        console.log((Math.round(gridPosX - 32)/tileSize));
+        console.log("X: " + gridPosX);
 
         //Vertical Clamp
         if(gridPosY < 1)
         {
-          element.style.top = String(10 + tileSize/2) +  "vh";
+          	element.style.top = String(10 + tileSize/2) +  "vh";
         }
         if(gridPosY > 10)
         {
-          element.style.top = String(82 + tileSize/2) +  "vh";
+          	element.style.top = String(82 + tileSize/2) +  "vh";
         }
+        //Horizontal Clamp
+        if(gridPosX < 1)
+        {
+          	element.style.left = String((vwToVh(100) - gridWidth * tileSize)/2 + tileSize/2) +  "vh";
+        }
+        if(gridPosX > 7)
+        {
+			element.style.left = String((vwToVh(100) + gridWidth * tileSize)/2 - tileSize/2) +  "vh";
+        }
+
       }
     // Keeps the loop running smoothly
     requestAnimationFrame(updatePosition);
