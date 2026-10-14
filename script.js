@@ -38,6 +38,16 @@ window.addEventListener('mousemove', (event) => {
     mouseVy = pxToVh(mouseY);
 });
 
+function handleResize() {
+  const width = window.innerWidth;   // Viewport width
+  const height = window.innerHeight; // Viewport height
+  
+  sidebarVlength = ((vwToVh(100) - (gridWidth * tileSize))/2);
+}
+
+// Listen for the resize event
+window.addEventListener('resize', handleResize);
+
 
 
 function updatePosition() {
