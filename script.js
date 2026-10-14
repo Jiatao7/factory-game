@@ -11,6 +11,7 @@ let gridPosY = 0;
 let tileSize = 8;
 let gridWidth = 7;
 let gridHeight = 10;
+let sidebarVlength = ((vwToVh(100) - (gridWidth * tileSize))/2);
 
 function pxToVh(pxValue) {
 	const viewportHeight = window.innerHeight;
@@ -46,8 +47,7 @@ function updatePosition() {
         element.style.top = String((Math.round((mouseVy + 10)/ tileSize) * tileSize) - 10) +  "vh";
         element.style.left =  String(Math.round((mouseVx - (vwToVh(100) - 48)/2)/ tileSize) * tileSize + (vwToVh(100) - 48)/2) +  "vh";
         gridPosY = String((Math.round((mouseVy + 10)/ tileSize) * tileSize) - 10);
-        gridPosX =  String(Math.round((mouseVx - (vwToVh(100) - 48)/2)/tileSize) * tileSize + (vwToVh(100) - 48)/2);
-        gridPosX = (Math.round(gridPosX - 32)/tileSize)
+        gridPosX =  String(Math.round((Math.round((mouseVx - sidebarVlength - tileSize/2)/tileSize) * tileSize + tileSize/2)/tileSize));
         gridPosY = (gridPosY - 6)/tileSize;
         
         console.log("Y: " + gridPosY);
