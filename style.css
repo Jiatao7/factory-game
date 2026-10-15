@@ -1,5 +1,4 @@
-#screen
-{
+#screen {
     display: flex;
     flex-direction: row;
     width: 100vw;
@@ -7,11 +6,10 @@
     position: absolute;
     top: 0vh;
     left: 0vw;
-    background-color: grey;
+    background-color: lightgrey;
 }
 
-#main
-{
+#main {
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -21,8 +19,7 @@
     flex-wrap: wrap;
 }
 
-#grid
-{
+#grid {
     /*7x10 grid size*/
     /*8x8 tile*/
     width: 56vh;
@@ -30,34 +27,52 @@
     background-color: yellow;
 }
 
-#headbar
-{
+.row {
+    height: 8vh;
+    display: flex;
+}
+
+.tile {
+    width: 8vh;
+    height: 100%;
+}
+
+.conveyor-tile {
+    background-color: grey;
+}
+
+.even-tile {
+    background-color: orange;
+}
+
+.odd-tile {
+    background-color: yellow;
+}
+
+#headbar {
     width: 56vh;
     height: 10vh;
     background-color: red;
 }
 
-#footbar
-{
+#footbar {
     width: 56vh;
     height: 10vh;
     background-color: red;
 }
 
-#place
-{
+#place {
     width: 8vh;
     height: 8vh;
     background-color: red;
     position: absolute;
-    transform: translate(-50%, -50%)
+    transform: translate(-50%, -50%);
 }
 
-.factory
-{
+.factory {
     width: 8vh;
     height: 8vh;
     background-color: red;
     position: absolute;
-    transform: translate(-50%, -50%)
+    transform: translate(-50%, -50%);
 }
