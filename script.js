@@ -13,6 +13,11 @@ let gridWidth = 7;
 let gridHeight = 10;
 let sidebarVlength = ((vwToVh(100) - (gridWidth * tileSize))/2);
 
+function clamp(min, val, max)
+{
+	return Math.min(Math.max(val, min), max);
+}
+
 function pxToVh(pxValue) {
 	const viewportHeight = window.innerHeight;
 	return (pxValue / viewportHeight) * 100;
@@ -39,16 +44,34 @@ window.addEventListener('mousemove', (event) => {
 });
 
 function handleResize() {
-  const width = window.innerWidth;   // Viewport width
-  const height = window.innerHeight; // Viewport height
-  
-  sidebarVlength = ((vwToVh(100) - (gridWidth * tileSize))/2);
+    const width = window.innerWidth;   // Viewport width
+    const height = window.innerHeight; // Viewport height
+
+    sidebarVlength = ((vwToVh(100) - (gridWidth * tileSize))/2);
+    Array.from(document.getElementsByClassName("factory")).forEach(element => {
+        element.style.left = sidebarVlength + "vh";
+        console.log("bruh")
+    });
 }
 
 // Listen for the resize event
 window.addEventListener('resize', handleResize);
 
+const element = document.querySelector('#myElement');
 
+window.addEventListener('mousedown', (event) => {
+  	console.log('Mouse button pressed down!');
+	const container = document.getElementById("grid");
+	const clone = document.getElementById("place").cloneNode(true);
+    clone.removeAttribute("id");
+	clone.className = String("factory " + String(gridPosX) + " " + String(gridPosY));	
+	console.log(document.getElementById("place").style.left)
+	clone.style.left = document.getElementById("place").style.left;
+	console.log(document.getElementById("place").style.left)
+	
+
+	container.append(clone);
+});
 
 function updatePosition() {
     const element = document.getElementById("place");
@@ -59,9 +82,6 @@ function updatePosition() {
         gridPosY = String((Math.round((mouseVy + 10)/ tileSize) * tileSize) - 10);
         gridPosX =  String(Math.round((Math.round((mouseVx - sidebarVlength - tileSize/2)/tileSize) * tileSize + tileSize/2)/tileSize));
         gridPosY = (gridPosY - 6)/tileSize;
-        
-        console.log("Y: " + gridPosY);
-        console.log("X: " + gridPosX);
 
         //Vertical Clamp
         if(gridPosY < 1)
@@ -81,8 +101,11 @@ function updatePosition() {
         {
 			element.style.left = String((vwToVh(100) + gridWidth * tileSize)/2 - tileSize/2) +  "vh";
         }
-
-      }
+    }
+	gridPosX = clamp(1, gridPosX, 7);
+	gridPosY = clamp(1, gridPosY, 10);
+	//console.log("Y: " + gridPosY);
+    //console.log("X: " + gridPosX);
     // Keeps the loop running smoothly
     requestAnimationFrame(updatePosition);
 }

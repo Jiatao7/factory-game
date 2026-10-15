@@ -52,3 +52,12 @@
     position: absolute;
     transform: translate(-50%, -50%)
 }
+
+.factory
+{
+    width: 8vh;
+    height: 8vh;
+    background-color: red;
+    position: absolute;
+    transform: translate(-50%, -50%)
+}
