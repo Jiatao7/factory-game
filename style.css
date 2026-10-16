@@ -53,13 +53,13 @@
 #headbar {
     width: 56vh;
     height: 10vh;
-    background-color: red;
+    background-color: green;
 }
 
 #footbar {
     width: 56vh;
     height: 10vh;
-    background-color: red;
+    background-color: green;
 }
 
 #place {
@@ -74,7 +74,20 @@
 .factory {
     width: 8vh;
     height: 8vh;
-    background-color: red;
     position: absolute;
-    transform: translate(-50%, -50%);
+}
+
+.tier1
+{
+    background-color: red;
+}
+
+.tier2
+{
+    background-color: orange;
+}
+
+.tier3
+{
+    background-color: yellow;
 }

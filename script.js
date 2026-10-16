@@ -36,6 +36,13 @@ function vhToVw(vhValue) {
   	return (vhValue * height) / width;
 }
 
+window.addEventListener('keydown', (event) => {
+    if(event.key == "p")
+    {
+        console.log("a");
+    }
+});
+
 window.addEventListener('mousemove', (event) => {
     mouseX = event.clientX + window.scrollX;
     mouseY = event.clientY + window.scrollY;
@@ -48,31 +55,14 @@ function handleResize() {
     const height = window.innerHeight; // Viewport height
 
     sidebarVlength = ((vwToVh(100) - (gridWidth * tileSize))/2);
-    Array.from(document.getElementsByClassName("factory")).forEach(element => {
+    /*Array.from(document.getElementsByClassName("factory")).forEach(element => {
         element.style.left = sidebarVlength + "vh";
         console.log("bruh")
-    });
+    });*/
 }
 
 // Listen for the resize event
 window.addEventListener('resize', handleResize);
-
-const element = document.querySelector('#myElement');
-
-/*window.addEventListener('mousedown', (event) => {
-  	console.log('Mouse button pressed down!');
-	const container = document.getElementById("grid");
-	const clone = document.getElementById("place").cloneNode(true);
-    clone.removeAttribute("id");
-	clone.className = String("factory " + String(gridPosX) + " " + String(gridPosY));	
-	console.log(document.getElementById("place").style.left)
-	clone.style.left = document.getElementById("place").style.left;
-	console.log(document.getElementById("place").style.left)
-	
-
-	container.append(clone);
-});*/
-
 
 function initialiseTiles(){
     document.querySelectorAll(".tile").forEach(element => {
@@ -82,10 +72,9 @@ function initialiseTiles(){
             const container = event.currentTarget;
             if(container.innerHTML === "")
             {
-                const clone = document.getElementById("place").cloneNode(true);
-                clone.removeAttribute("id");
-                clone.className = String("factory " + String(gridPosX) + " " + String(gridPosY));
-                container.append(clone);
+                const newFactory = document.createElement('div');
+                newFactory.className = String("factory " + String(gridPosX) + "-" + String(gridPosY) + " tier1");
+                container.append(newFactory);
             }
 	
         });
