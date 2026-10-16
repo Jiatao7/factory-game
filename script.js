@@ -59,7 +59,7 @@ window.addEventListener('resize', handleResize);
 
 const element = document.querySelector('#myElement');
 
-window.addEventListener('mousedown', (event) => {
+/*window.addEventListener('mousedown', (event) => {
   	console.log('Mouse button pressed down!');
 	const container = document.getElementById("grid");
 	const clone = document.getElementById("place").cloneNode(true);
@@ -71,7 +71,26 @@ window.addEventListener('mousedown', (event) => {
 	
 
 	container.append(clone);
-});
+});*/
+
+
+function initialiseTiles(){
+    document.querySelectorAll(".tile").forEach(element => {
+        element.addEventListener('click', (event) => {
+            //console.log(element.classList);
+            //console.log(event.currentTarget);
+            const container = event.currentTarget;
+            if(container.innerHTML === "")
+            {
+                const clone = document.getElementById("place").cloneNode(true);
+                clone.removeAttribute("id");
+                clone.className = String("factory " + String(gridPosX) + " " + String(gridPosY));
+                container.append(clone);
+            }
+	
+        });
+    });
+}
 
 function updatePosition() {
     const element = document.getElementById("place");
@@ -109,6 +128,7 @@ function updatePosition() {
     // Keeps the loop running smoothly
     requestAnimationFrame(updatePosition);
 }
-
+initialiseTiles();
 // Start the loop
 requestAnimationFrame(updatePosition);
+
