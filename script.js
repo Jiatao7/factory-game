@@ -1,5 +1,3 @@
-const container = document.getElementById("grid")
-
 let mouseX = 0;
 let mouseY = 0;
 let mouseVx = 0;
@@ -44,11 +42,20 @@ window.addEventListener('keydown', (event) => {
         {
             playerMode = "player";
             document.getElementById("place").style.visibility = "hidden";
+            document.querySelectorAll(".tile").forEach(element => {
+                element.style.cursor = "default";
+            });
         }
         else
         {
             playerMode = "editing";
             document.getElementById("place").style.visibility = "visible";
+            document.querySelectorAll(".tile").forEach(element => {
+                if(element.innerHTML === ""){
+                    element.style.cursor = "pointer";
+                }
+            });
+            
         }
         console.log("now: " + playerMode);
     }
@@ -66,10 +73,6 @@ function handleResize() {
     const height = window.innerHeight; // Viewport height
 
     sidebarVlength = ((vwToVh(100) - (gridWidth * tileSize))/2);
-    /*Array.from(document.getElementsByClassName("factory")).forEach(element => {
-        element.style.left = sidebarVlength + "vh";
-        console.log("bruh")
-    });*/
 }
 
 // Listen for the resize event
@@ -86,6 +89,7 @@ function initialiseTiles(){
                     const newFactory = document.createElement('div');
                     newFactory.className = String("factory " + String(gridPosX) + "-" + String(gridPosY) + " tier1");
                     container.append(newFactory);
+                    element.style.cursor = "default";
                 }
         
             }

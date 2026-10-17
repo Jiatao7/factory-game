@@ -19,6 +19,10 @@
     flex-wrap: wrap;
 }
 
+.force-cursor-refresh {
+  cursor: inherit !important;
+}
+
 #grid {
     /*7x10 grid size*/
     /*8x8 tile*/
