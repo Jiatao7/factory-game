@@ -63,6 +63,7 @@
 }
 
 #place {
+    visibility: visible;
     pointer-events: none;
     width: 8vh;
     height: 8vh;
