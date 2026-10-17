@@ -44,6 +44,11 @@ window.addEventListener('keydown', (event) => {
             document.getElementById("place").style.visibility = "hidden";
             document.querySelectorAll(".tile").forEach(element => {
                 element.style.cursor = "default";
+                element.style.pointerEvents = "none";
+            });
+
+            document.querySelectorAll(".factory").forEach(element => {
+                element.style.cursor = "pointer";
             });
         }
         else
@@ -51,9 +56,17 @@ window.addEventListener('keydown', (event) => {
             playerMode = "editing";
             document.getElementById("place").style.visibility = "visible";
             document.querySelectorAll(".tile").forEach(element => {
+                element.style.pointerEvents = "auto";
                 if(element.innerHTML === ""){
                     element.style.cursor = "pointer";
                 }
+                else
+                {
+                    element.style.cursor = "default";
+                }
+            });
+            document.querySelectorAll(".factory").forEach(element => {
+                element.style.cursor = "default";
             });
             
         }
@@ -89,9 +102,17 @@ function initialiseTiles(){
                     const newFactory = document.createElement('div');
                     newFactory.className = String("factory " + String(gridPosX) + "-" + String(gridPosY) + " tier1");
                     container.append(newFactory);
+                    newFactory.style.pointerEvents = "auto";
+                    newFactory.addEventListener('click', (innerEvent) => {
+                        console.log("bruh");
+                        innerEvent.currentTarget.remove();
+                        const container = document.getElementById("screen");
+                        const replacement = document.createElement("div");
+                        replacement.classList.add("factory", "1-1", "tier1", "drag");
+                        container.append(replacement);
+                    });
                     element.style.cursor = "default";
                 }
-        
             }
         });
     });
@@ -129,12 +150,19 @@ function updatePosition() {
             }
         }
         gridPosX = clamp(1, gridPosX, 7);
-        gridPosY = clamp(1, gridPosY, 10);
-        //console.log("Y: " + gridPosY);
-        //console.log("X: " + gridPosX);
-        // Keeps the loop running smoothly
-        
+        gridPosY = clamp(1, gridPosY, 10);   
     }
+    //Make the dragged tile follow the mouse
+    const dragged = document.querySelector(".drag");
+    if(dragged)
+    {
+        console.log("DRAG");
+        dragged.style.top = mouseVy + "vh";
+        dragged.style.left = mouseVx + "vh";
+    }
+
+
+
     requestAnimationFrame(updatePosition);
 }
 initialiseTiles();
