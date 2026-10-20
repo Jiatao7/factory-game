@@ -82,6 +82,11 @@
     position: absolute;
 }
 
+.drag
+{
+    transform: translate(-50%, -50%);
+}
+
 .tier1
 {
     background-color: red;

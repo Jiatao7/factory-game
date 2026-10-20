@@ -11,64 +11,29 @@ let gridWidth = 7;
 let gridHeight = 10;
 let sidebarVlength = ((vwToVh(100) - (gridWidth * tileSize))/2);
 let playerMode = "editing";
-
-function clamp(min, val, max)
-{
-	return Math.min(Math.max(val, min), max);
-}
-
-function pxToVh(pxValue) {
-	const viewportHeight = window.innerHeight;
-	return (pxValue / viewportHeight) * 100;
-}
-
-function vwToVh(vwValue) {
-  	const width = window.innerWidth;
-  	const height = window.innerHeight;
-  
-  	return vwValue * (width / height);
-}
-
-function vhToVw(vhValue) {
-  	const height = window.innerHeight;
-  	const width = window.innerWidth;
-  	return (vhValue * height) / width;
-}
+let dragging = false;
 
 window.addEventListener('keydown', (event) => {
     if(event.key == "p")
     {
         if(playerMode == "editing")
         {
-            playerMode = "player";
-            document.getElementById("place").style.visibility = "hidden";
-            document.querySelectorAll(".tile").forEach(element => {
-                element.style.cursor = "default";
-                element.style.pointerEvents = "none";
-            });
-
-            document.querySelectorAll(".factory").forEach(element => {
-                element.style.cursor = "pointer";
-            });
+            switchToPlayer();
         }
         else
         {
-            playerMode = "editing";
-            document.getElementById("place").style.visibility = "visible";
-            document.querySelectorAll(".tile").forEach(element => {
-                element.style.pointerEvents = "auto";
-                if(element.innerHTML === ""){
-                    element.style.cursor = "pointer";
-                }
-                else
-                {
-                    element.style.cursor = "default";
-                }
-            });
-            document.querySelectorAll(".factory").forEach(element => {
-                element.style.cursor = "default";
-            });
+            switchToEditing();
+        }
+        console.log("now: " + playerMode);
+    }
+    if(event.key == "Escape")
+    {
+        const dragged = document.querySelector(".drag");
+        if(playerMode == "editing" && dragged)
+        {
+            switchToPlayer();
             
+            dragged.remove();
         }
         console.log("now: " + playerMode);
     }
@@ -81,42 +46,8 @@ window.addEventListener('mousemove', (event) => {
     mouseVy = pxToVh(mouseY);
 });
 
-function handleResize() {
-    const width = window.innerWidth;   // Viewport width
-    const height = window.innerHeight; // Viewport height
-
-    sidebarVlength = ((vwToVh(100) - (gridWidth * tileSize))/2);
-}
-
 // Listen for the resize event
 window.addEventListener('resize', handleResize);
-
-function initialiseTiles(){
-    document.querySelectorAll(".tile").forEach(element => {
-        element.addEventListener('click', (event) => {
-            if(playerMode == "editing")
-            {
-                const container = event.currentTarget;
-                if(container.innerHTML === "")
-                {
-                    const newFactory = document.createElement('div');
-                    newFactory.className = String("factory " + String(gridPosX) + "-" + String(gridPosY) + " tier1");
-                    container.append(newFactory);
-                    newFactory.style.pointerEvents = "auto";
-                    newFactory.addEventListener('click', (innerEvent) => {
-                        console.log("bruh");
-                        innerEvent.currentTarget.remove();
-                        const container = document.getElementById("screen");
-                        const replacement = document.createElement("div");
-                        replacement.classList.add("factory", "1-1", "tier1", "drag");
-                        container.append(replacement);
-                    });
-                    element.style.cursor = "default";
-                }
-            }
-        });
-    });
-}
 
 function updatePosition() {
     if(playerMode == "editing")
@@ -156,9 +87,9 @@ function updatePosition() {
     const dragged = document.querySelector(".drag");
     if(dragged)
     {
-        console.log("DRAG");
         dragged.style.top = mouseVy + "vh";
         dragged.style.left = mouseVx + "vh";
+        switchToEditing();
     }
 
 
