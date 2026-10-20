@@ -20,7 +20,7 @@
 }
 
 .force-cursor-refresh {
-  cursor: inherit !important;
+    cursor: inherit !important;
 }
 
 #grid {
@@ -71,7 +71,6 @@
     pointer-events: none;
     width: 8vh;
     height: 8vh;
-    background-color: red;
     position: absolute;
     transform: translate(-50%, -50%);
 }
@@ -82,17 +81,14 @@
     position: absolute;
 }
 
-.tier1
-{
+.factory-size-small {
     background-color: red;
 }
 
-.tier2
-{
-    background-color: orange;
+.factory-size-medium {
+    background-color: violet;
 }
 
-.tier3
-{
-    background-color: yellow;
+.factory-size-large {
+    background-color: purple;
 }
