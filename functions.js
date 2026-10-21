@@ -1,34 +1,36 @@
 function switchToEditing()
 {
+    
     playerMode = "editing";
-    document.getElementById("place").style.visibility = "visible";
-    document.querySelectorAll(".tile").forEach(element => {
+    heldItemElement.style.visibility = "visible";
+    document.querySelectorAll(".tile").forEach((element) => {
         element.style.pointerEvents = "auto";
-        if(element.innerHTML === ""){
+        if (element.innerHTML === "") {
             element.style.cursor = "pointer";
-        }
-        else
-        {
+        } else {
             element.style.cursor = "default";
         }
     });
-    document.querySelectorAll(".factory").forEach(element => {
+    document.querySelectorAll(".factory").forEach((element) => {
         element.style.cursor = "default";
     });
-}
+} 
+
 
 function switchToPlayer()
 {
     playerMode = "player";
-    document.getElementById("place").style.visibility = "hidden";
-    document.querySelectorAll(".tile").forEach(element => {
+    heldItemElement.style.visibility = "hidden";
+    document.querySelectorAll(".tile").forEach((element) => {
         element.style.cursor = "default";
         element.style.pointerEvents = "none";
     });
 
-    document.querySelectorAll(".factory").forEach(element => {
+    document.querySelectorAll(".factory").forEach((element) => {
         element.style.cursor = "pointer";
     });
+
+    
 }
 
 function clamp(min, val, max)
@@ -61,39 +63,39 @@ function handleResize() {
     sidebarVlength = ((vwToVh(100) - (gridWidth * tileSize))/2);
 }
 
-function initialiseTiles(){
-    document.querySelectorAll(".tile").forEach(element => {
-        element.addEventListener('click', (event) => {
-            if(playerMode == "editing")
-            {
+function initialiseTiles() {
+    document.querySelectorAll(".tile").forEach((element) => {
+        element.addEventListener("click", (event) => {
+            if (playerMode === "editing") {
                 const container = event.currentTarget;
-                if(container.innerHTML === "")
-                {
-                    const newFactory = document.createElement('div');
-                    newFactory.className = String("factory " + String(gridPosX) + "-" + String(gridPosY) + " tier1");
-                    container.append(newFactory);
-                    if(dragging)
-                    {
-                        switchToPlayer();
-                        dragging = false;
-                        document.querySelector(".drag").remove();
-                        console.log("Removed Dragging Element");
-                    }
+                if (container.innerHTML === "") {
+                    const newFactory = document.createElement("div");
+                    newFactory.classList.add(
+                        "factory",
+                        `factory-size-${heldItem.size}`,
+                        `factory-type-${heldItem.type}`,
+                        `${gridPosX}-${gridPosY}`,
+                    );
                     newFactory.style.pointerEvents = "auto";
-
-
-                    newFactory.addEventListener('click', (innerEvent) => {
-                        //delete and create new one to take it out
-                        console.log("Created Dragging Element");
-                        dragging = true;
-                        innerEvent.currentTarget.remove();
-                        const container = document.getElementById("screen");
-                        const replacement = document.createElement("div");
-                        replacement.style.pointerEvents =  "none";
-                        replacement.classList.add("factory", "1-1", "tier1", "drag");
-                        container.append(replacement);
-                        //switchToEditing();
+                    newFactory.addEventListener("click", () => {
+                        if (playerMode === "player") {
+                            const factorySize = Array.from(element.classList)
+                                .find((className) =>
+                                    className.startsWith("factory-size-"),
+                                )
+                                .replace("factory-size-", "");
+                            const factoryType = Array.from(element.classList)
+                                .find((className) =>
+                                    className.startsWith("factory-type-"),
+                                )
+                                .replace("factory-type-", "");
+                            heldItem = Factory(factorySize, factoryType);
+                            updateHeldItemElement();
+                            newFactory.remove();
+                        }
                     });
+
+                    container.append(newFactory);
                     element.style.cursor = "default";
                 }
             }
