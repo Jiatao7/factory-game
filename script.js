@@ -11,7 +11,7 @@ let gridWidth = 7;
 let gridHeight = 10;
 let sidebarVlength = (vwToVh(100) - gridWidth * tileSize) / 2;
 let playerMode = "editing";
-const heldItem = new Factory("small");
+let heldItem = new Factory("small");
 const heldItemElement = document.querySelector("#place");
 
 function clamp(min, val, max) {
@@ -60,47 +60,18 @@ function updateHeldItemElement() {
     console.log(`Adding: ${heldItem.size} ${heldItem.type}`);
 }
 
-window.addEventListener("keydown", (event) => {
-    if (event.key === "p") {
-        if (playerMode == "editing") {
-            playerMode = "player";
-            heldItemElement.style.visibility = "hidden";
-            document.querySelectorAll(".tile").forEach((element) => {
-                element.style.cursor = "default";
-                element.style.pointerEvents = "none";
-            });
-
-            document.querySelectorAll(".factory").forEach((element) => {
-                element.style.cursor = "pointer";
-            });
-        } else {
-            playerMode = "editing";
-            heldItemElement.style.visibility = "visible";
-            document.querySelectorAll(".tile").forEach((element) => {
-                element.style.pointerEvents = "auto";
-                if (element.innerHTML === "") {
-                    element.style.cursor = "pointer";
-                } else {
-                    element.style.cursor = "default";
-                }
-            });
-            document.querySelectorAll(".factory").forEach((element) => {
-                element.style.cursor = "default";
-            });
-        }
-    }
-});
-
 window.addEventListener('keydown', (event) => {
     if(event.key == "p")
     {
         if(playerMode == "editing")
-        {
+        {            
             switchToPlayer();
         }
         else
         {
+            console.log("before: " + playerMode);
             switchToEditing();
+            console.log(playerMode);
         }
         console.log("now: " + playerMode);
     }
@@ -147,7 +118,9 @@ window.addEventListener("resize", handleResize);
 function initialiseTiles() {
     document.querySelectorAll(".tile").forEach((element) => {
         element.addEventListener("click", (event) => {
+            
             if (playerMode === "editing") {
+                console.log("tile clicked");
                 const container = event.currentTarget;
                 if (container.innerHTML === "") {
                     const newFactory = document.createElement("div");
@@ -157,22 +130,38 @@ function initialiseTiles() {
                         `factory-type-${heldItem.type}`,
                         `${gridPosX}-${gridPosY}`,
                     );
+                    const dragged = document.querySelector(".drag");
+                    console.log(dragged);
+                    if(dragged)
+                    {
+                        console.log("hi");
+                        dragged.remove();
+                        switchToPlayer();
+                    }
                     newFactory.style.pointerEvents = "auto";
-                    newFactory.addEventListener("click", () => {
+                    newFactory.addEventListener("click", (innerEvent) => {
                         if (playerMode === "player") {
-                            const factorySize = Array.from(element.classList)
+                            console.log(Array.from(innerEvent.currentTarget.classList));
+                            const factorySize = Array.from(innerEvent.currentTarget.classList)
                                 .find((className) =>
                                     className.startsWith("factory-size-"),
                                 )
                                 .replace("factory-size-", "");
-                            const factoryType = Array.from(element.classList)
+
+                            const factoryType = Array.from(innerEvent.currentTarget.classList)
                                 .find((className) =>
                                     className.startsWith("factory-type-"),
                                 )
                                 .replace("factory-type-", "");
-                            heldItem = Factory(factorySize, factoryType);
+                            heldItem = new Factory(factorySize, factoryType);
                             updateHeldItemElement();
                             newFactory.remove();
+                            const replace = document.createElement("div");
+                            replace.classList = "factory drag factory-size-small";
+                            const container = document.getElementById("screen");
+                            container.append(replace);
+                            requestAnimationFrame(switchToEditing);
+
                         }
                     });
 
@@ -244,7 +233,7 @@ function updatePosition() {
         console.log("DRAG");
         dragged.style.top = mouseVy + "vh";
         dragged.style.left = mouseVx + "vh";
-        switchToEditing();
+        
     }
 
     requestAnimationFrame(updatePosition);
